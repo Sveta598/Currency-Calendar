@@ -6,10 +6,6 @@
     <title>Валютный календарь</title>
     <link rel="stylesheet" href="css/font/flaticon.css">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 </head>
 <body>
     <!--header-->
@@ -17,15 +13,15 @@
         <h1 class="header__title">Валютный календарь</h1>
         <div class="header__info"><a href="projectInfo.html" class="header__anchor" title="Описание текущего проекта">Информация о проекте</a></div>
         <div class="header__info header__info_second"><a href="today.html" class="header__anchor" title="Информация об установленных валютных курсах на сегодня">Курсы валют на сегодня</a></div>
-     </header>
+    </header>
      <!--navigation-->
      <nav class="navigation">
-        <div class="navigation__avblock"><a href="average.html" class="navigation__anchor" title="Информация об изменении валютных курсов за год">Изменение валютных курсов за год</a></div>
-        <div class="navigation__choice"><h1 class="navigation__title">Изменение курсов валют за период</h1>
-            <form class="navigation__form" method="GET" action="index.html">
+        <div class="navigation__avblock"><a href="index.html" class="navigation__anchor" title="Ссылка на главную страницу">Вернуться на главную страницу</a></div>
+        <div class="navigation__choice"><h1 class="navigation__title">Изменение курсов валют за год</h1>
+            <form class="navigation__form" method="GET" action="average.html">
                 <div class="navigation__choiceitem navigation__choiceitem_first">
                 <label class="navigation__label">Выберите валюту</label><br>
-                <select class="navigation__selection navigation__selection1" onchange="currencySelection()">
+                <select class="navigation__selection" onchange="currencySelection()">
                     <option class="navigation__option1" selected>AUD</option>
                     <option class="navigation__option2">BGN</option>
                     <option class="navigation__option3">UAH</option>
@@ -59,32 +55,27 @@
                     <input type="text" class="navigation__input navigation__input_first" value="170" readonly>
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_third">
-                    <label class="navigation__label">Выберите период отображения</label><br>
-                    <select class="navigation__selection" onchange="periodSelection()">
-                        <option class="navigation__option27" selected>день</option>
-                        <option class="navigation__option28">неделя</option>
-                        <option class="navigation__option29">месяц</option>
-                        <option class="navigation__option30">три месяца</option>
+                    <label class="navigation__label">Выберите год</label><br>
+                    <select class="navigation__selection" onchange="yearSelection()">
+                        <option class="navigation__option27" selected>прошлый год</option>
+                        <option class="navigation__option28">текущий год</option>
                     </select>
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_fourth">
-                    <label class="navigation__label">Начальная дата отображения:</label><br>
-                    <input type="date" class="navigation__input navigation__input_second" min="2019-01-01" readonly>
+                    <label class="navigation__label">Выбранный год:</label><br>
+                    <input type="text" class="navigation__input navigation__input_fourth" readonly>
                 </div>
-                <div class="navigation__curdate">
-                    <label class="navigation__label">Текущая дата:</label><br>
-                    <input type="date" class="navigation__input navigation__input_third" readonly>
-                </div>
+                <button class="navigation__closebutton" onclick='longtermChart()'>Закрыть график</button>   
             </form>
-            <button class="navigation__button" onclick='getChart()'>Отобразить график</button>
+            <button class="navigation__openbutton" onclick='longtermChart()'>Отобразить график</button>
         </div>
      </nav>
      <!--main part-->
      <main class="mainpart">
-        <figure class="highcharts-figure">
-            <div id="container"></div>
-        </figure>
-    </main>
+        <div class="container">
+
+        </div>
+     </main>
      <!--footer-->
      <footer class="footer">
         <div class="footer__copyright">
@@ -115,8 +106,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 
-    <script src="js/script3.js"></script>
-    <script src="js/script2.js"></script>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="js/script5.js"></script>
+    <script src="js/script4.js"></script>
     <script src="js/upButton.js"></script>
 </body>
 </html>

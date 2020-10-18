@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Валютный календарь</title>
+    <link rel="stylesheet" href="css/font/flaticon.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!--header-->
+    <header class="header">
+        <h1 class="header__title">Валютный календарь</h1>
+        <div class="header__info"><a href="index.html" class="header__anchor" title="Ссылка на главную страницу">Вернуться на главную страницу</a></div>
+        <div class="header__info header__info_second"><a href="today.html" class="header__anchor" title="Информация об установленных валютных курсах на сегодня">Курсы валют на сегодня</a></div>
+    </header>
+    <!--navigation-->
+    <nav class="navigation">
+        <div class="navigation__avblock"><a href="average.html" class="navigation__anchor" title="Информация об изменении валютных курсов за год">Изменение валютных курсов за год</a></div>
+    </nav>
+    <!--main part-->
+    <main class="mainpart">
+        <h1 class="mainpart__title">О проекте &laquo;Валютный календарь&raquo;</h1>
+        <p class="mainpart__paragraph">Этот проект называется &laquo;Валютный календарь&raquo;. Проект создавался с целью обеспечить
+            пользователю возможность найти интересующую его информацию о курсах иностранных валют по отношению к белорусскому
+            рублю. Для создания этого проекта использовались HTML, CSS и Javascript, в частности html&ndash;формы, вёрстка по БЭМ, 
+            иконочные шрифты, API с сайта nbrb.by, веб&ndash;воркеры, библиотеки Highcharts, D3, Moment.js и Day.js, Node.js и сборщик 
+            проектов Webpack. Данные, которые быстро обновляются, сохранялись в Local Storage, а данные, обновляющиеся редко, 
+            сохранялись в кэш.
+        </p>
+        <p class="mainpart__paragraph">
+            На главной странице сайта, созданного в рамках проекта, пользователь может посмотреть динамику изменения курса
+            интересующей его иностранной валюты по отношению к белорусскому рублю за выбранный период. По умолчанию 
+            отображается график изменения курса австралийского доллара по отношению к белорусскому рублю за последние 
+            сутки. Однако с помощью имеющейся на странице формы пользователь может выбрать и другую валюту и интересующий 
+            его период: последний день, неделю, месяц или три месяца. Страница содержит ссылки на страницу с информацией о
+            проекте и страницу с таблицей курсов 26 иностранных валют на сегодня. 
+        </p>
+        <p class="mainpart__paragraph">
+           Перейдя по отдельной ссылке, пользователь может посмотреть долгосрочную динамику изменения валютных курсов за
+           2019 и 2020 год. Поскольку график, содержащий курсы на все даты в течение года, выглядел бы некрасиво и был бы
+           неудобен для чтения, долгосрочные данные представлены в виде средних значений валютных курсов за каждый месяц 
+           года. С помощью имеющейся на странице формы пользователь может выбрать текущий или предыдущий год, а также одну 
+           из 26 иностранных валют. При нажатии на кнопку &laquo;Отобразить график&raquo; на странице отобразится график 
+           в соответствии с выбранными пользователем параметрами, а при нажатии на кнопку &laquo;Закрыть график&raquo; 
+           отображённый график закроется. В нижней части всех страниц сайта имеются ссылки на социальные сети и ссылка на 
+           страницу с информацией о проекте.
+        </p> 
+    </main>
+    <!--footer-->
+    <footer class="footer">
+        <div class="footer__copyright">
+            Copyright<sup>&copy;</sup><span class="footer__curyear"></span>
+        </div>
+        <div class="footer__info"><a href="projectInfo.html" class="footer__anchor" title="Описание текущего проекта">Информация о проекте</a></div>
+        <div class="footer__share">
+            <a href="http://www.vk.com" class="footer__anchor" title="Ссылка на Vk" target="_blank">
+                <i class="flaticon-vk-social-logotype"></i>
+            </a>
+            <a href="http://www.facebook.com" class="footer__anchor" title="Ссылка на Facebook" target="_blank">
+                <i class="flaticon-facebook"></i>
+            </a>
+            <a href="http://www.twitter.com" class="footer__anchor" title="Ссылка на Twitter" target="_blank">
+                <i class="flaticon-twitter"></i>
+            </a>
+            <a href="http://www.youtube.com" class="footer__anchor" title="Ссылка на Youtube" target="_blank">
+                <i class="flaticon-youtube"></i>
+            </a>
+            <a href="http://www.pinterest.com" class="footer__anchor" title="Ссылка на Pinterest" target="_blank">
+                <i class="flaticon-pinterest-social-logo"></i>
+            </a>
+            <a href="http://instagram.com" class="footer__anchor" title="Ссылка на Instagram" target="_blank">
+                <i class="flaticon-instagram"></i>
+            </a>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    
+    <script src="js/script.js"></script>
+    <script src="js/upButton.js"></script>
+</body>
+</html>
+
