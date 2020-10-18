@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Валютный календарь</title>
+    <link rel="stylesheet" href="css/font/flaticon.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+</head>
+<body>
+    <!--header-->
+    <header class="header">
+        <h1 class="header__title">Валютный календарь</h1>
+        <div class="header__info"><a href="projectInfo.html" class="header__anchor" title="Описание текущего проекта">Информация о проекте</a></div>
+        <div class="header__info header__info_second"><a href="today.html" class="header__anchor" title="Информация об установленных валютных курсах на сегодня">Курсы валют на сегодня</a></div>
+     </header>
+     <!--navigation-->
+     <nav class="navigation">
+        <div class="navigation__avblock"><a href="average.html" class="navigation__anchor" title="Информация об изменении валютных курсов за год">Изменение валютных курсов за год</a></div>
+        <div class="navigation__choice"><h1 class="navigation__title">Изменение курсов валют за период</h1>
+            <form class="navigation__form" method="GET" action="index.html">
+                <div class="navigation__choiceitem navigation__choiceitem_first">
+                <label class="navigation__label">Выберите валюту</label><br>
+                <select class="navigation__selection navigation__selection1" onchange="currencySelection()">
+                    <option class="navigation__option1" selected>AUD</option>
+                    <option class="navigation__option2">BGN</option>
+                    <option class="navigation__option3">UAH</option>
+                    <option class="navigation__option4">DKK</option>
+                    <option class="navigation__option5">USD</option>
+                    <option class="navigation__option6">EUR</option>
+                    <option class="navigation__option7">PLN</option>
+                    <option class="navigation__option8">JPY</option>
+                    <option class="navigation__option9">IRR</option>
+                    <option class="navigation__option10">ISK</option>
+                    <option class="navigation__option11">CAD</option>
+                    <option class="navigation__option12">CNY</option>
+                    <option class="navigation__option13">KWD</option>
+                    <option class="navigation__option14">MDL</option>
+                    <option class="navigation__option15">NZD</option>
+                    <option class="navigation__option16">NOK</option>
+                    <option class="navigation__option17">RUB</option>
+                    <option class="navigation__option18">XDR</option>
+                    <option class="navigation__option19">SGD</option>
+                    <option class="navigation__option20">KGS</option>
+                    <option class="navigation__option21">KZT</option>
+                    <option class="navigation__option22">TRY</option>
+                    <option class="navigation__option23">GBP</option>
+                    <option class="navigation__option24">CZK</option>
+                    <option class="navigation__option25">SEK</option>
+                    <option class="navigation__option26">CHF</option>
+                </select>
+                </div>
+                <div class="navigation__choiceitem navigation__choiceitem_second">
+                    <label class="navigation__label">id валюты:</label><br>
+                    <input type="text" class="navigation__input navigation__input_first" value="170" readonly>
+                </div>
+                <div class="navigation__choiceitem navigation__choiceitem_third">
+                    <label class="navigation__label">Выберите период отображения</label><br>
+                    <select class="navigation__selection" onchange="periodSelection()">
+                        <option class="navigation__option27" selected>день</option>
+                        <option class="navigation__option28">неделя</option>
+                        <option class="navigation__option29">месяц</option>
+                        <option class="navigation__option30">три месяца</option>
+                    </select>
+                </div>
+                <div class="navigation__choiceitem navigation__choiceitem_fourth">
+                    <label class="navigation__label">Начальная дата отображения:</label><br>
+                    <input type="date" class="navigation__input navigation__input_second" min="2019-01-01" readonly>
+                </div>
+                <div class="navigation__curdate">
+                    <label class="navigation__label">Текущая дата:</label><br>
+                    <input type="date" class="navigation__input navigation__input_third" readonly>
+                </div>
+            </form>
+            <button class="navigation__button" onclick='getChart()'>Отобразить график</button>
+        </div>
+     </nav>
+     <!--main part-->
+     <main class="mainpart">
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+        </figure>
+    </main>
+     <!--footer-->
+     <footer class="footer">
+        <div class="footer__copyright">
+            Copyright<sup>&copy;</sup><span class="footer__curyear"></span>
+        </div>
+        <div class="footer__info"><a href="projectInfo.html" class="footer__anchor" title="Описание текущего проекта">Информация о проекте</a></div>
+        <div class="footer__share">
+            <a href="http://www.vk.com" class="footer__anchor" title="Ссылка на Vk" target="_blank">
+                <i class="flaticon-vk-social-logotype"></i>
+            </a>
+            <a href="http://www.facebook.com" class="footer__anchor" title="Ссылка на Facebook" target="_blank">
+                <i class="flaticon-facebook"></i>
+            </a>
+            <a href="http://www.twitter.com" class="footer__anchor" title="Ссылка на Twitter" target="_blank">
+                <i class="flaticon-twitter"></i>
+            </a>
+            <a href="http://www.youtube.com" class="footer__anchor" title="Ссылка на Youtube" target="_blank">
+                <i class="flaticon-youtube"></i>
+            </a>
+            <a href="http://www.pinterest.com" class="footer__anchor" title="Ссылка на Pinterest" target="_blank">
+                <i class="flaticon-pinterest-social-logo"></i>
+            </a>
+            <a href="http://instagram.com" class="footer__anchor" title="Ссылка на Instagram" target="_blank">
+                <i class="flaticon-instagram"></i>
+            </a>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+
+    <script src="js/script3.js"></script>
+    <script src="js/script2.js"></script>
+    <script src="js/upButton.js"></script>
+</body>
+</html>
