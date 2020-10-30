@@ -3,7 +3,6 @@ const curdate = moment();
 const currentYear = document.querySelector('.footer__curyear');
 currentYear.innerHTML = moment().year();
 
-
 function getCurrencyTable(content) {
     let list = document.querySelector('.mainpart__table');
 
@@ -20,6 +19,29 @@ function getCurrencyTable(content) {
             <td class="mainpart__tableCell">${content[key].Date}</td>         
         </tr>
         ` 
+        localStorage.setItem('currency', JSON.stringify(content.map(element => { 
+            return element.Cur_Abbreviation;
+        })));
+        localStorage.setItem('curID', JSON.stringify(content.map(element => { 
+            return element.Cur_ID;
+        })));
+
+        let currencyNames = JSON.stringify(content.map(element => { 
+            return element.Cur_Name;
+        }));
+        if (localStorage.getItem('curName') !== null) {
+            currencyNames = JSON.parse(localStorage.getItem('curName'));
+        } else {
+            localStorage.setItem('curName', currencyNames);
+        }
+        
+        localStorage.setItem('Cur_OfficialRate', JSON.stringify(content.map(element => { 
+            return element.Cur_OfficialRate;
+        })));
+        localStorage.setItem('Date', JSON.stringify(content.map(element => { 
+            return element.Date;
+        })));
+        
     }
 }
 
@@ -31,4 +53,3 @@ if (window.Worker) {
         getCurrencyTable(event.data);       
     });   
 }
-

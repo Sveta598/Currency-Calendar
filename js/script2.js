@@ -87,6 +87,12 @@ currentDate.value = moment().format(format);
 const currentYear = document.querySelector('.footer__curyear');
 currentYear.innerHTML = moment().year();
 
+if (localStorage.getItem('Yearnow') !== null) {
+    currentYear.innerHTML = JSON.parse(localStorage.getItem('Yearnow'));
+} else {
+    localStorage.setItem('Yearnow', JSON.stringify(currentYear.innerHTML));
+}
+
 const dayjsformat = 'YYYY-MM-DD';
 const dayjscurdate = dayjs();
 document.querySelector('.navigation__input_second').value = dayjscurdate.subtract(1,'d').format(format);
@@ -105,25 +111,3 @@ function periodSelection () {
         document.querySelector('.navigation__input_second').value = dayjscurdate.subtract(3,'M').format(format);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
