@@ -2,6 +2,7 @@ function longtermChart() {
   document.querySelector('.container').style.display = 'block';
 
   const currencyID = document.querySelector('.navigation__input_first').value;
+  localStorage.setItem('curID', JSON.stringify(currencyID));
   const dayformat = 'YYYY-MM-DD';
   const datenow = dayjs();
 
@@ -10,6 +11,8 @@ function longtermChart() {
   } else {
     year = datenow.format(dayformat).slice(0, 4);
   }
+
+  localStorage.setItem('YearSelected', JSON.stringify(year));
 
   if(document.querySelector('.navigation__option1').selected === true) {
     currencyName = 'AUD';
@@ -90,6 +93,8 @@ function longtermChart() {
     currencyName = 'CHF';
   }
 
+  localStorage.setItem('currency', JSON.stringify(currencyName));
+
   const url = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${currencyID}?startDate=${year}-01-01T00:00:00&endDate=${year}-12-31T00:00:00`;
   const worker = new Worker('js/worker5.js');
   worker.postMessage(url);
@@ -101,6 +106,7 @@ function longtermChart() {
   const resultArray = [];
 
   function calculateResultArray (quoteArray) {
+    localStorage.setItem('Cur_OfficialRate', JSON.stringify(quoteArray));
     const janquotes = quoteArray.slice(0, 31);
     if(document.querySelector('.navigation__option27').selected === true) {
       febquotes = quoteArray.slice(31, 59);
@@ -226,6 +232,8 @@ function longtermChart() {
     });
 
     drawChart(resultArray);
+
+    localStorage.setItem('ResultArray', JSON.stringify(resultArray));
     
   }
 
