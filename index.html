@@ -24,8 +24,8 @@
             <form class="navigation__form" method="GET" action="index.html">
                 <div class="navigation__choiceitem navigation__choiceitem_first">
                 <label class="navigation__label">Выберите валюту</label><br>
-                <select class="navigation__selection navigation__selection1">
-                   
+                <select id="valuta" class="navigation__selection navigation__selection1">
+
                 </select>
                 <template class="navigation__selectionVariants">
                     <option class="navigation__currencyOption"></option>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_second">
                     <label class="navigation__label">Начальная дата отображения:</label><br>
-                    <input type="date" class="navigation__input navigation__input_first" min="1991-01-01">
+                    <input id="startDateId" type="date" class="navigation__input navigation__input_first" min="1991-01-01">
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_third">
                     <label class="navigation__label">Параметр отображения на графике:</label><br>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_fourth">
                     <label class="navigation__label">Конечная дата отображения:</label><br>
-                    <input type="date" class="navigation__input navigation__input_second" min="1991-01-01">
+                    <input id="endDateId" type="date" class="navigation__input navigation__input_second" min="1991-01-01">
                 </div>
             </form>
             <button class="navigation__button" onclick='getChart()'>Показать новый график</button>
@@ -87,7 +87,7 @@
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>-->
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 
-    
+
     <script src="js/script3.js"></script>
     <script src="js/upButton.js"></script>
     <script src="js/main.js"></script>
