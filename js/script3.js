@@ -87,14 +87,39 @@ function getChart () {
         currencies = JSON.parse(currencies);
     }
 
+    /*console.log(currencies);*/
+
     const curObj = currencies[cur];
+    const urlArray = [];
+    const newArray = curObj.payload;
+    for (let i = 0; i < newArray.length; i++) {
+        const curID = newArray[i].Cur_ID;
+        const curDataStart = newArray[i].Cur_DateStart;
+        const curDataEnd = newArray[i].Cur_DateEnd;
+        const url1 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${startDate}T00:00:00&endDate=${endDate}T00:00:00`;
+        urlArray.push(url1);
+        const url2 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${startDate}T00:00:00&endDate=${curDataEnd}T00:00:00`;
+        urlArray.push(url2);
+        const url3 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${curDataStart}T00:00:00&endDate=${endDate}T00:00:00`;
+        urlArray.push(url3)
+        const url4 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${curDataStart}T00:00:00&endDate=${curDataEnd}T00:00:00`;
+        urlArray.push(url4);
+
+
+        worker1.postMessage(urlArray);
+    }
+
+
+
+
+
 
     /*
     * 1. разделить по промежуткам связанным с id
     * 2. разделить по промежуткам связанным с ограничением на период в 1 год
     * */
 
-    worker1.postMessage(readyUrlArray);
+    /*worker1.postMessage({cur, startDate, endDate});*/
 }
 
 function chart(categories, data) {
