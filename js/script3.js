@@ -100,13 +100,15 @@ function getChart () {
 
         const endD = endDate < period.endDate ? endDate : period.endDate;
 
-        periodArr.push(`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${period.curID}?startDate=${startDate}T00:00:00&endDate=${endD}T00:00:00`);
-
+        periodArr.push({
+          curId: period.curID,
+          startDate,
+          endDate: endD,
+        });
         if (endDate <= period.endDate) { break; }
     }
 
     console.log(periodArr);
-
 
 
 
