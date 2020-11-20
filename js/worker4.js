@@ -9,8 +9,18 @@ function mapper (commits) {
 };
 
 onmessage = function(e) {
-    fetch(e.data)
-        .then(response => response.json())
-        .then(mapper) 
-        .then(self.postMessage);
+        const promises = e.data.map(url => fetch(url)
+            .then(response => response.json())
+            .then(mapper)
+        );
+    
+        Promise.all(promises)
+            .then(data => {
+                const result = [];
+    
+                data.forEach(el => result.push(...el))
+    
+                return result;
+            })
+            .then(self.postMessage);
 }
