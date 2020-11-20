@@ -1,155 +1,185 @@
-const dayjsdateformat = 'YYYY-MM-DD';
-const dayjscurrentdate = dayjs();
+const currencyUrl2 = 'https://www.nbrb.by/api/exrates/currencies';
 
-const endDate = dayjs().format(dayjsdateformat);
+const worker = new Worker('js/worker3.js');
+worker.postMessage(currencyUrl2)
+worker.onmessage = function(e) {
+    getOptions (e.data);
+    worker.terminate();
+}
 
-function getChart() {
-    if(document.querySelector('.navigation__option1').selected === true) {
-        currency = 'AUD';
-    }
-    else if(document.querySelector('.navigation__option2').selected === true){
-        currency = 'BGN';
-    }
-    else if(document.querySelector('.navigation__option3').selected === true){
-        currency = 'UAH';
-    }
-    else if(document.querySelector('.navigation__option4').selected === true){
-        currency = 'DKK';
-    }
-    else if(document.querySelector('.navigation__option5').selected === true){
-        currency = 'USD';
-    }
-    else if(document.querySelector('.navigation__option6').selected === true){
-        currency = 'EUR';
-    }
-    else if(document.querySelector('.navigation__option7').selected === true){
-        currency = 'PLN';
-    }
-    else if(document.querySelector('.navigation__option8').selected === true){
-        currency = 'JPY';
-    }
-    else if(document.querySelector('.navigation__option9').selected === true){
-        currency = 'IRR';
-    }
-    else if(document.querySelector('.navigation__option10').selected === true){
-        currency = 'ISK';
-    }
-    else if(document.querySelector('.navigation__option11').selected === true){
-        currency = 'CAD';
-    }
-    else if(document.querySelector('.navigation__option12').selected === true){
-        currency = 'CNY';
-    }
-    else if(document.querySelector('.navigation__option13').selected === true){
-        currency = 'KWD';
-    }
-    else if(document.querySelector('.navigation__option14').selected === true){
-        currency = 'MDL';
-    }
-    else if(document.querySelector('.navigation__option15').selected === true){
-        currency = 'NZD';
-    }
-    else if(document.querySelector('.navigation__option16').selected === true){
-        currency = 'NOK';
-    }
-    else if(document.querySelector('.navigation__option17').selected === true){
-        currency = 'RUB';
-    }
-    else if(document.querySelector('.navigation__option18').selected === true){
-        currency = 'XDR';
-    }
-    else if(document.querySelector('.navigation__option19').selected === true){
-        currency = 'SGD';
-    }
-    else if(document.querySelector('.navigation__option20').selected === true){
-        currency = 'KGS';
-    }
-    else if(document.querySelector('.navigation__option21').selected === true){
-        currency = 'KZT';
-    }
-    else if(document.querySelector('.navigation__option22').selected === true){
-        currency = 'TRY';
-    }
-    else if(document.querySelector('.navigation__option23').selected === true){
-        currency = 'GBP';
-    }
-    else if(document.querySelector('.navigation__option24').selected === true){
-        currency = 'CZK';
-    }
-    else if(document.querySelector('.navigation__option25').selected === true){
-        currency = 'SEK';
-    }
-    else {
-        currency = 'CHF';
-    }   
+const worker1 = new Worker('js/worker4.js');
+worker1.onmessage = function(e) {
+    chart (e.data.date, e.data.rate);
+}
 
-    localStorage.setItem('currency', JSON.stringify(currency));
+function getOptions(currencyData) {
 
-    const curID = document.querySelector('.navigation__input_first').value;
-    localStorage.setItem('curID', JSON.stringify(curID));
+    let key;
 
-    if(document.querySelector('.navigation__option27').selected === true) {
-        startDate = dayjscurrentdate.subtract(1,'d').format(dayjsdateformat);
-    }
-    else if(document.querySelector('.navigation__option28').selected === true) {
-        startDate = dayjscurrentdate.subtract(7,'d').format(dayjsdateformat);
-    }
-    else if(document.querySelector('.navigation__option29').selected === true) {
-        startDate = dayjscurrentdate.subtract(1,'M').format(dayjsdateformat);
-    }    
-    else {
-        startDate = dayjscurrentdate.subtract(3,'M').format(dayjsdateformat);
-    }
+    const currencyObj = {};
 
-    localStorage.setItem('startDate', JSON.stringify(startDate));
+    for (let i = 0; i < currencyData.length; i++) {
+        const abbr = currencyData[i].Cur_Abbreviation;
 
-    localStorage.setItem('endDate', JSON.stringify(endDate));
-    
-    const url = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${startDate}T00:00:00&endDate=${endDate}T00:00:00`;
-
-    const worker = new Worker('js/worker3.js');
-        worker.postMessage(url);
-        worker.onmessage = function(e) {
-            chart (e.data.date, e.data.rate);
+        if (!currencyObj[abbr]) {
+            currencyObj[abbr] = {
+                Cur_Abbreviation: abbr,
+                payload: [],
+            }
         }
 
-    function chart(categories, data) {
-        Highcharts.chart('container', {
-            chart: {
-                type: 'line'
-            },
-            title: {
-                text: `Курс ${currency} к BYN`
-            },
-            subtitle: {
-                text: `Изменение курса ${currency}`
-            },
-            xAxis: {
-                categories,
-            },
-            yAxis: {
-                title: {
-                        text: 'Курс валюты'
-                }
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                        enableMouseTracking: false
-                }
-            },
-            series: [{
-                    name: `${currency}`,
-                    data,
-                }] 
+        currencyObj[abbr].payload.push({
+            Cur_ID: currencyData[i].Cur_ID,
+            Cur_DateStart: currencyData[i].Cur_DateStart,
+            Cur_DateEnd: currencyData[i].Cur_DateEnd,
         });
+    }
 
-    localStorage.setItem('Date', JSON.stringify(categories));
-    localStorage.setItem('Cur_OfficialRate', JSON.stringify(data));
-        
+    if (localStorage.getItem('currencyObject') !== null) {
+        JSON.parse(localStorage.getItem('currencyObject'));
+    } else {
+        localStorage.setItem('currencyObject', JSON.stringify(currencyObj));
+    }
+
+    const currencyArr = Object.values(currencyObj);
+
+    let options = '';
+
+    const temp = document.querySelector('.navigation__selectionVariants');
+    const item = temp.content.querySelector('.navigation__currencyOption');
+
+    for (key in currencyArr) {
+
+        currencyArr.sort(function(a, b){
+            if(a.Cur_Abbreviation < b.Cur_Abbreviation) { return -1; }
+            if(a.Cur_Abbreviation > b.Cur_Abbreviation) { return 1; }
+            return 0;
+        })
+
+        options = currencyArr[key].Cur_Abbreviation;
+        const copyHTML = document.importNode(item, true);
+        copyHTML.textContent = options;
+        document.querySelector('.navigation__selection1').appendChild(copyHTML);
+    }
+
+    if (localStorage.getItem('currencyArray') !== null) {
+        JSON.parse(localStorage.getItem('currencyArray'));
+    } else {
+        localStorage.setItem('currencyArray', JSON.stringify(currencyArr));
     }
 }
 
-getChart();
+const dateFormat = ('YYYY-MM-DD');
+const currentDate = dayjs().format(dateFormat);
+document.querySelector('.navigation__input_first').max = currentDate;
+document.querySelector('.navigation__input_second').max = currentDate;
+
+function getChart () {
+    const cur = valuta.value;
+    const startDate = startDateId.value;
+    const endDate = endDateId.value;
+
+    let currencies = localStorage.getItem('currencyObject');
+    if (!currencies) {
+        throw 'currencyObj not setted';
+        return;
+    } else {
+        currencies = JSON.parse(currencies);
+    }
+
+    /*console.log(currencies);*/
+
+    const curObj = currencies[cur];
+    const urlArray = [];
+    const newArray = curObj.payload;
+    for (let i = 0; i < newArray.length; i++) {
+        const curID = newArray[i].Cur_ID;
+        const curDataStart = newArray[i].Cur_DateStart;
+        const curDataEnd = newArray[i].Cur_DateEnd;
+        const curDataStart2 = newArray[i + 1].Cur_DateStart;
+        const curDataEnd2 = newArray[i + 1].Cur_DateEnd;
+        const curDataEndAdd = dayjs(curDataEnd).add(1, 'd');
+        const comparison1 = dayjs(startDate).isBefore(curDataEndAdd);
+        const comparison2 = dayjs(endDate).isAfter(curDataEnd);
+        const comparison3 = dayjs(curDataStart2).isAfter(curDataEnd);
+
+        if (comparison1 === true && comparison2 === true) {
+            url2 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${startDate}T00:00:00&endDate=${curDataEnd}T00:00:00`;
+            urlArray.push(url2);
+            url3 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${curDataStart}T00:00:00&endDate=${endDate}T00:00:00`;
+            urlArray.push(url3)
+        }
+
+        if (comparison1 === true && ) {
+
+        }
+
+
+        const url1 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${startDate}T00:00:00&endDate=${endDate}T00:00:00`;
+        urlArray.push(url1);
+        const url2 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${startDate}T00:00:00&endDate=${curDataEnd}T00:00:00`;
+        urlArray.push(url2);
+        const url3 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${curDataStart}T00:00:00&endDate=${endDate}T00:00:00`;
+        urlArray.push(url3)
+        const url4 = `https://www.nbrb.by/API/ExRates/Rates/Dynamics/${curID}?startDate=${curDataStart}T00:00:00&endDate=${curDataEnd}T00:00:00`;
+        urlArray.push(url4);
+
+       
+        worker1.postMessage(urlArray);
+    }
+
+   
+    
+    
+    
+
+    /*
+    * 1. разделить по промежуткам связанным с id
+    * 2. разделить по промежуткам связанным с ограничением на период в 1 год
+    * */
+
+    /*worker1.postMessage({cur, startDate, endDate});*/
+}
+
+function chart(categories, data) {
+    Highcharts.chart('container', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: `Курс валюты к BYN`
+        },
+        subtitle: {
+            text: `Изменение курса выбранной валюты за выбранный период`
+        },
+        xAxis: {
+            categories,
+        },
+        yAxis: {
+            title: {
+            text: 'Курс валюты'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: `Динамика валютного курса`,
+            data,
+        }]
+    });
+}
+
+const currentYear = document.querySelector('.footer__curyear');
+currentYear.innerHTML = dayjs().year();
+
+if (localStorage.getItem('currenctYear') !== null) {
+    JSON.parse(localStorage.getItem('currentYear'));
+} else {
+    localStorage.setItem('currenctYear', JSON.stringify(currentYear.innerHTML));
+}

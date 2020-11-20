@@ -20,63 +20,35 @@
      </header>
      <!--navigation-->
      <nav class="navigation">
-        <div class="navigation__avblock"><a href="average.html" class="navigation__anchor" title="Информация об изменении валютных курсов за год">Изменение валютных курсов за год</a></div>
         <div class="navigation__choice"><h1 class="navigation__title">Изменение курсов валют за период</h1>
             <form class="navigation__form" method="GET" action="index.html">
                 <div class="navigation__choiceitem navigation__choiceitem_first">
                 <label class="navigation__label">Выберите валюту</label><br>
-                <select class="navigation__selection navigation__selection1" onchange="currencySelection()">
-                    <option class="navigation__option1" selected>AUD</option>
-                    <option class="navigation__option2">BGN</option>
-                    <option class="navigation__option3">UAH</option>
-                    <option class="navigation__option4">DKK</option>
-                    <option class="navigation__option5">USD</option>
-                    <option class="navigation__option6">EUR</option>
-                    <option class="navigation__option7">PLN</option>
-                    <option class="navigation__option8">JPY</option>
-                    <option class="navigation__option9">IRR</option>
-                    <option class="navigation__option10">ISK</option>
-                    <option class="navigation__option11">CAD</option>
-                    <option class="navigation__option12">CNY</option>
-                    <option class="navigation__option13">KWD</option>
-                    <option class="navigation__option14">MDL</option>
-                    <option class="navigation__option15">NZD</option>
-                    <option class="navigation__option16">NOK</option>
-                    <option class="navigation__option17">RUB</option>
-                    <option class="navigation__option18">XDR</option>
-                    <option class="navigation__option19">SGD</option>
-                    <option class="navigation__option20">KGS</option>
-                    <option class="navigation__option21">KZT</option>
-                    <option class="navigation__option22">TRY</option>
-                    <option class="navigation__option23">GBP</option>
-                    <option class="navigation__option24">CZK</option>
-                    <option class="navigation__option25">SEK</option>
-                    <option class="navigation__option26">CHF</option>
+                <select id="valuta" class="navigation__selection navigation__selection1">
+
                 </select>
+                <template class="navigation__selectionVariants">
+                    <option class="navigation__currencyOption"></option>
+                </template>
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_second">
-                    <label class="navigation__label">id валюты:</label><br>
-                    <input type="text" class="navigation__input navigation__input_first" value="170" readonly>
+                    <label class="navigation__label">Начальная дата отображения:</label><br>
+                    <input id="startDateId" type="date" class="navigation__input navigation__input_first" min="1991-01-01">
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_third">
-                    <label class="navigation__label">Выберите период отображения</label><br>
-                    <select class="navigation__selection" onchange="periodSelection()">
-                        <option class="navigation__option27" selected>день</option>
-                        <option class="navigation__option28">неделя</option>
-                        <option class="navigation__option29">месяц</option>
-                        <option class="navigation__option30">три месяца</option>
+                    <label class="navigation__label">Параметр отображения на графике:</label><br>
+                    <select class="navigation__selection navigation__selection2">
+                        <option class="navigation__periodOption" value="день">день</option>
+                        <option class="navigation__periodOption" value="месяц">месяц</option>
+                        <option class="navigation__periodOption" value="год">год</option>
                     </select>
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_fourth">
-                    <label class="navigation__label">Начальная дата отображения:</label><br>
-                    <input type="date" class="navigation__input navigation__input_second" min="2019-01-01" readonly>
-                </div>
-                <div class="navigation__curdate">
-                    <label class="navigation__label">Текущая дата:</label><br>
-                    <input type="date" class="navigation__input navigation__input_third" readonly>
+                    <label class="navigation__label">Конечная дата отображения:</label><br>
+                    <input id="endDateId" type="date" class="navigation__input navigation__input_second" min="1991-01-01">
                 </div>
             </form>
-            <button class="navigation__button" onclick='getChart()'>Отобразить график</button>
+            <button class="navigation__button" onclick='getChart()'>Показать новый график</button>
         </div>
      </nav>
      <!--main part-->
@@ -112,11 +84,11 @@
             </a>
         </div>
     </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>-->
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 
+
     <script src="js/script3.js"></script>
-    <script src="js/script2.js"></script>
     <script src="js/upButton.js"></script>
     <script src="js/main.js"></script>
 </body>

@@ -1,7 +1,6 @@
-const format = 'YYYY-MM-DD';
-const curdate = moment();
+const curdate = dayjs();
 const currentYear = document.querySelector('.footer__curyear');
-currentYear.innerHTML = moment().year();
+currentYear.innerHTML = dayjs().year();
 
 function getCurrencyTable(content) {
     let list = document.querySelector('.mainpart__table');
@@ -10,7 +9,6 @@ function getCurrencyTable(content) {
     
     for (key in content) {
         list.innerHTML += `
-        
         <tr>
             <td class="mainpart__tableCell">${content[key].Cur_Abbreviation}</td>
             <td class="mainpart__tableCell">${content[key].Cur_ID}</td>
@@ -19,29 +17,6 @@ function getCurrencyTable(content) {
             <td class="mainpart__tableCell">${content[key].Date}</td>         
         </tr>
         ` 
-        localStorage.setItem('currency', JSON.stringify(content.map(element => { 
-            return element.Cur_Abbreviation;
-        })));
-        localStorage.setItem('curID', JSON.stringify(content.map(element => { 
-            return element.Cur_ID;
-        })));
-
-        let currencyNames = JSON.stringify(content.map(element => { 
-            return element.Cur_Name;
-        }));
-        if (localStorage.getItem('curName') !== null) {
-            currencyNames = JSON.parse(localStorage.getItem('curName'));
-        } else {
-            localStorage.setItem('curName', currencyNames);
-        }
-        
-        localStorage.setItem('Cur_OfficialRate', JSON.stringify(content.map(element => { 
-            return element.Cur_OfficialRate;
-        })));
-        localStorage.setItem('Date', JSON.stringify(content.map(element => { 
-            return element.Date;
-        })));
-        
     }
 }
 
