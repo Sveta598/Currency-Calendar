@@ -77,8 +77,8 @@ document.querySelector('.navigation__input_second').max = currentDate;
 
 function getChart () {
     const cur = valuta.value;
-    const startDate = startDateId.value;
-    const endDate = endDateId.value;
+    let startDate = startDateId.value;
+    let endDate = endDateId.value;
 
     let currencies = localStorage.getItem('currencyObject');
     if (!currencies) {
@@ -95,23 +95,71 @@ function getChart () {
     for (let i = 0; i < newArray.length; i++) {
     
         const period = curObj.payload[i];
+        
+        /*if (startDate > period.Cur_DateEnd.slice(0, 10)) { continue; }*/
+
+        const range = dayjs(endDate).diff(startDate, 'year');
+
+        let endD = '';
+
+        if (endDate <= period.Cur_DateEnd.slice(0, 10)) {
+           endD = endDate;
+        } else {
+            endD = period.Cur_DateEnd.slice(0, 10);
+        }
+
+        //если длина запрашиваемого периода больше года
+        if (range >= 1) {
+           
+            endD = dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat);
+        
+            periodArr.push({
+                curId: period.Cur_ID,
+                startDate,
+                endDate: endD,
+                
+            });
+
+            if (endD === dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                for (let k = 1; k < range; k++) {
+                    startDate2 = dayjs(startDate).add(k, 'y').format(dateFormat);
+                    endD2 = dayjs(startDate2).add(1, 'y').subtract(1, 'd').format(dateFormat);
+                 
+                    periodArr.push({
+                        curId: period.Cur_ID,
+                        startDate: startDate2,
+                        endDate: endD2,
+                    });
+                }
+            }
+
+            if (endD2 = dayjs(startDate2).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                startDate3 = dayjs(endD2).add(1, 'd').format(dateFormat);
+                
+                periodArr.push({
+                    curId: period.Cur_ID,
+                    startDate: startDate3,
+                    endDate: endDate,
+                
+                });
+            }
+        }
+        //если длина запрашиваемого периода меньше года
+        else {
+          periodArr.push({
+                curId: period.Cur_ID,
+                startDate,
+                endDate: endD,
+                
+            });
+        }
+
+       /*if (endDate <= period.Cur_DateEnd.slice(0, 10)) { break; }*/
        
-        if (startDate > period.Cur_DateEnd.slice(0, 10)) { continue; }
-
-        const endD = endDate <= period.Cur_DateEnd.slice(0, 10) ? endDate : period.Cur_DateEnd.slice(0, 10);
-
-        periodArr.push({
-          curId: period.Cur_ID,
-          startDate,
-          endDate: endD,
-        });
-
-        if (endDate <= period.Cur_DateEnd.slice(0, 10)) { break; }
     }
-
-
+    
     console.log(periodArr);
-
+    
     /*
     * 1. разделить по промежуткам связанным с id
     * 2. разделить по промежуткам связанным с ограничением на период в 1 год
