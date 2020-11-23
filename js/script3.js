@@ -96,65 +96,121 @@ function getChart () {
     
         const period = curObj.payload[i];
         
-        /*if (startDate > period.Cur_DateEnd.slice(0, 10)) { continue; }*/
+        if (startDate > period.Cur_DateEnd.slice(0, 10)) { continue; }
 
         const range = dayjs(endDate).diff(startDate, 'year');
 
         let endD = '';
-
-        if (endDate <= period.Cur_DateEnd.slice(0, 10)) {
-           endD = endDate;
-        } else {
-            endD = period.Cur_DateEnd.slice(0, 10);
+        //если curId не менялся
+        if (curObj.payload.length === 1) {
+            startDate = startDateId.value;
+            endD = endDate;
+        }
+        //если curId менялся
+        else {
+            if (endDate <= period.Cur_DateEnd.slice(0, 10)) {
+                endD = endDate;
+                if (startDate >= curObj.payload[i].Cur_DateStart) {
+                    startDate = startDateId.value;
+                } else {
+                    startDate = curObj.payload[i].Cur_DateStart.slice(0, 10);
+                }
+            } else {
+                 endD = period.Cur_DateEnd.slice(0, 10);
+                 startDate = startDateId.value;
+            }
         }
 
         //если длина запрашиваемого периода больше года
         if (range >= 1) {
-           
-            endD = dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat);
-        
-            periodArr.push({
-                curId: period.Cur_ID,
-                startDate,
-                endDate: endD,
-                
-            });
+            //если длина менее 2 лет
+            if (range < 2) {
+                if(endD > period.Cur_DateEnd.slice(0, 10)) {
+                    endD = period.Cur_DateEnd.slice(0, 10);
+                }
 
-            if (endD === dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
-                for (let k = 1; k < range; k++) {
-                    startDate2 = dayjs(startDate).add(k, 'y').format(dateFormat);
-                    endD2 = dayjs(startDate2).add(1, 'y').subtract(1, 'd').format(dateFormat);
-                 
+                endD = dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat);
+    
+                periodArr.push({
+                    curId: period.Cur_ID,
+                    startDate,
+                    endDate: endD,
+                    
+                });
+
+                if (endD === dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                    startDate5 = dayjs(startDate).add(1, 'y').format(dateFormat);
+                    if (endDate > period.Cur_DateEnd.slice(0, 10)) {
+                        endDate = period.Cur_DateEnd.slice(0, 10);
+                    }
+
                     periodArr.push({
                         curId: period.Cur_ID,
-                        startDate: startDate2,
-                        endDate: endD2,
+                        startDate: startDate5,
+                        endDate: endDate,
                     });
                 }
             }
+            //если длина более 2 лет
+            else {
+                if(endD > period.Cur_DateEnd.slice(0, 10)) {
+                    endD = period.Cur_DateEnd.slice(0, 10);
+                }
 
-            if (endD2 = dayjs(startDate2).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
-                startDate3 = dayjs(endD2).add(1, 'd').format(dateFormat);
-                
+                endD = dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat);
+        
                 periodArr.push({
                     curId: period.Cur_ID,
-                    startDate: startDate3,
-                    endDate: endDate,
-                
+                    startDate,
+                    endDate: endD,
+                    
                 });
+
+                if (endD === dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                    for (let k = 1; k < range; k++) {
+                        startDate2 = dayjs(startDate).add(k, 'y').format(dateFormat);
+                        endD2 = dayjs(startDate2).add(1, 'y').subtract(1, 'd').format(dateFormat);
+
+                        if(endD2 > period.Cur_DateEnd.slice(0, 10)) {
+                            endD2 = period.Cur_DateEnd.slice(0, 10);
+                        }
+
+                        periodArr.push({
+                            curId: period.Cur_ID,
+                            startDate: startDate2,
+                            endDate: endD2,
+                        });
+                    }
+                }
+            
+             
+                if (endD2 = dayjs(startDate2).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                    startDate3 = dayjs(endD2).add(1, 'd').format(dateFormat);
+
+                    if(endDate > period.Cur_DateEnd.slice(0, 10)) {
+                        endDate = period.Cur_DateEnd.slice(0, 10);
+                    }
+                    
+                    periodArr.push({
+                        curId: period.Cur_ID,
+                        startDate: startDate3,
+                        endDate: endDate,
+                    
+                    });
+                }
             }
         }
         //если длина запрашиваемого периода меньше года
         else {
-          periodArr.push({
+            periodArr.push({
                 curId: period.Cur_ID,
                 startDate,
                 endDate: endD,
-                
+                    
             });
         }
 
-       /*if (endDate <= period.Cur_DateEnd.slice(0, 10)) { break; }*/
+       if (endDate <= period.Cur_DateEnd.slice(0, 10)) { break; }
        
     }
     
@@ -165,7 +221,7 @@ function getChart () {
     * 2. разделить по промежуткам связанным с ограничением на период в 1 год
     * */
 
-    worker1.postMessage(periodArr);
+   worker1.postMessage(periodArr);
 }
 
 function chart(categories, data) {
