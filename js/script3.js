@@ -105,8 +105,8 @@ function getChart () {
       const endYear = Number(dayjs(iED).format('YYYY'));
 
       for (let year = startYear; year <= endYear; year += 1) {
-        const begin = year === startYear ? iSD: `${year}-01-01`;
-        const end = year === endYear ? iED : `${year}-12-31`;
+        const begin = year === startYear ? dayjs(iSD).format('YYYY-MM-DD'): `${year}-01-01`;
+        const end = year === endYear ? dayjs(iED).format('YYYY-MM-DD') : `${year}-12-31`;
 
         urlArr.push(`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${newArray[period].Cur_ID}?startDate=${begin}T00:00:00&endDate=${end}T00:00:00`)
       }
