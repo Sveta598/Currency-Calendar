@@ -155,6 +155,34 @@ function getChart () {
             else {
                 if(endD > period.Cur_DateEnd.slice(0, 10)) {
                     endD = period.Cur_DateEnd.slice(0, 10);
+
+                    //////////////////////////////////////////////////
+                    if (endD = period.Cur_DateEnd.slice(0, 10)) {
+                        range2 = dayjs(endDate).diff(endD, 'year');
+                        curId2 = curObj.payload[i+1].Cur_ID;
+                        for (let n = 0; n < range2; n++) {
+                            startDate5 = dayjs(endD).add(n, 'y').add(1, 'd').format(dateFormat);
+                            endD5 = dayjs(startDate5).add(1, 'y').subtract(1, 'd').format(dateFormat);
+
+                            periodArr.push({
+                                curId: curId2,
+                                startDate: startDate5,
+                                endDate: endD5,
+                            });
+                        }
+                    }
+                    /*****************************************************/
+                    if (endD5 = dayjs(startDate5).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                        curId2 = curObj.payload[i+1].Cur_ID;
+                        startDate51 = dayjs(endD5).add(1, 'd').format(dateFormat);
+
+                        periodArr.push({
+                            curId: curId2,
+                            startDate: startDate51,
+                            endDate: endDate,
+                        });
+                    }
+                    ////////////////////////////////////////////////// 
                 }
 
                 endD = dayjs(startDate).add(1, 'y').subtract(1, 'd').format(dateFormat);
@@ -173,6 +201,33 @@ function getChart () {
 
                         if(endD2 > period.Cur_DateEnd.slice(0, 10)) {
                             endD2 = period.Cur_DateEnd.slice(0, 10);
+                                    //////////////////////////////////////////////////
+                            if (endD2 = period.Cur_DateEnd.slice(0, 10)) {
+                                range3 = dayjs(endDate).diff(endD2, 'year');
+                                curId2 = curObj.payload[i+1].Cur_ID;
+                                for (let n = 0; n < range2; n++) {
+                                    startDate6 = dayjs(endD2).add(n, 'y').add(1, 'd').format(dateFormat);
+                                    endD6 = dayjs(startDate6).add(1, 'y').subtract(1, 'd').format(dateFormat);
+
+                                    periodArr.push({
+                                        curId: curId2,
+                                        startDate: startDate6,
+                                        endDate: endD6,
+                                    });
+                                }
+                            }
+                            /*****************************************************/
+                            if (endD6 = dayjs(startDate6).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                                curId2 = curObj.payload[i+1].Cur_ID;
+                                startDate61 = dayjs(endD6).add(1, 'd').format(dateFormat);
+
+                                periodArr.push({
+                                    curId: curId2,
+                                    startDate: startDate61,
+                                    endDate: endDate,
+                                });
+                            }
+                            ////////////////////////////////////////////////// 
                         }
 
                         periodArr.push({
@@ -182,13 +237,41 @@ function getChart () {
                         });
                     }
                 }
-            
-             
+                
                 if (endD2 = dayjs(startDate2).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
                     startDate3 = dayjs(endD2).add(1, 'd').format(dateFormat);
 
                     if(endDate > period.Cur_DateEnd.slice(0, 10)) {
                         endDate = period.Cur_DateEnd.slice(0, 10);
+
+                              //////////////////////////////////////////////////
+                              if (endDate = period.Cur_DateEnd.slice(0, 10)) {
+                                endDate111 =  endDateId.value;
+                                range4 = dayjs(endDate111).diff(endDate, 'year');
+                                curId2 = curObj.payload[i+1].Cur_ID;
+                                for (let n = 0; n < range4; n++) {
+                                    startDate7 = dayjs(endDate).add(n, 'y').add(1, 'd').format(dateFormat);
+                                    endD7 = dayjs(startDate7).add(1, 'y').subtract(1, 'd').format(dateFormat);
+
+                                    periodArr.push({
+                                        curId: curId2,
+                                        startDate: startDate7,
+                                        endDate: endD7,
+                                    });
+                                }
+                            }
+                            /*****************************************************/
+                            if (endD7 = dayjs(startDate7).add(1, 'y').subtract(1, 'd').format(dateFormat)) {
+                                curId2 = curObj.payload[i+1].Cur_ID;
+                                startDate71 = dayjs(endD7).add(1, 'd').format(dateFormat);
+
+                                periodArr.push({
+                                    curId: curId2,
+                                    startDate: startDate71,
+                                    endDate: endDate111,
+                                });
+                            }
+                            ////////////////////////////////////////////////// 
                     }
                     
                     periodArr.push({
