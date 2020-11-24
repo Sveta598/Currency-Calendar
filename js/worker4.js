@@ -8,7 +8,6 @@ function mapper (commits) {
     return {date, rate}
 };
 
-<<<<<<< HEAD
 onmessage = function(e) {
         const promises = e.data.map(url => fetch(url));
     
@@ -24,6 +23,4 @@ onmessage = function(e) {
             })
             .then(mapper)
             .then(self.postMessage);
-}
-=======
->>>>>>> 7ee61504c61b85ff217305003baca11013ed5f3a
+    }

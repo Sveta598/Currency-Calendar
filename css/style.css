@@ -102,10 +102,6 @@
     margin-left: 70%;
     margin-bottom: 2%;
 } 
-<<<<<<< HEAD
-=======
-
->>>>>>> 7ee61504c61b85ff217305003baca11013ed5f3a
 /*main part*/
 .mainpart {
    min-height: 500px;
@@ -121,7 +117,6 @@
     background-color: lightblue; 
 }
 .mainpart__tableCell {
-<<<<<<< HEAD
     border-top: 2px dashed green;
     border-left: 2px dashed green;
     border-right: 2px dashed green;
@@ -132,9 +127,6 @@
     margin-top: 0;
     margin-bottom: 0;
 }  
-=======
-
->>>>>>> 7ee61504c61b85ff217305003baca11013ed5f3a
 .mainpart__paragraph {
     text-align: justify;
     padding-left: 10%;
@@ -173,7 +165,6 @@
 .footer__anchor:active {
     color: red;
     text-shadow: 2px 2px orange;
-<<<<<<< HEAD
 }
 
 @media screen and (max-width: 650px) {
@@ -228,5 +219,3 @@
           display: none;
       }  
 }
-=======
->>>>>>> 7ee61504c61b85ff217305003baca11013ed5f3a
