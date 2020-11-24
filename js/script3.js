@@ -69,10 +69,7 @@ function getOptions(currencyData) {
     }
 }
 
-const dateFormat = ('YYYY-MM-DD');
-const currentDate = dayjs().format(dateFormat);
-document.querySelector('.navigation__input_first').max = currentDate;
-document.querySelector('.navigation__input_second').max = currentDate;
+
 
 function getChart () {
     const cur = valuta.value;
@@ -87,37 +84,7 @@ function getChart () {
         currencies = JSON.parse(currencies);
     }
 
-    /*console.log(currencies);*/
 
-    const curObj = currencies[cur];
-    const newArray = curObj.payload;
-    const periodArr = [];
-
-    for (let i = 0; i < newArray.length; i++) {
-        const period = curObj.payload[i];
-
-        if (startDate > period.endDate) { continue; }
-
-        const endD = endDate < period.endDate ? endDate : period.endDate;
-
-        periodArr.push({
-          curId: period.curID,
-          startDate,
-          endDate: endD,
-        });
-        if (endDate <= period.endDate) { break; }
-    }
-
-    console.log(periodArr);
-
-
-
-    /*
-    * 1. разделить по промежуткам связанным с id
-    * 2. разделить по промежуткам связанным с ограничением на период в 1 год
-    * */
-
-    /*worker1.postMessage({cur, startDate, endDate});*/
 }
 
 function chart(categories, data) {
