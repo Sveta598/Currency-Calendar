@@ -9,12 +9,11 @@ function mapper (commits) {
 };
 
 onmessage = function(e) {
-        const promises = e.data.map(url => fetch(url)
-            .then(response => response.json())
-            .then(mapper)
-        );
+        const promises = e.data.map(url => fetch(url));
     
         Promise.all(promises)
+            .then(data => data.map(response => response.json()))
+            .then(data => Promise.all(data))
             .then(data => {
                 const result = [];
     
@@ -22,5 +21,6 @@ onmessage = function(e) {
     
                 return result;
             })
+            .then(mapper)
             .then(self.postMessage);
 }
