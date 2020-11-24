@@ -69,11 +69,7 @@ function getOptions(currencyData) {
     }
 }
 
-const dateFormat = ('YYYY-MM-DD');
-const currentDate = dayjs().format(dateFormat);
-const currentDateSubtract = dayjs().subtract(1, 'd').format(dateFormat);
-document.querySelector('.navigation__input_first').max = currentDateSubtract;
-document.querySelector('.navigation__input_second').max = currentDate;
+
 
 function getChart () {
     const cur = valuta.value;
@@ -88,31 +84,7 @@ function getChart () {
         currencies = JSON.parse(currencies);
     }
 
-    const curObj = currencies[cur];
-    const newArray = curObj.payload;
-    const urlArr = [];
 
-    for (let period = 0; period < newArray.length; period += 1) {
-        // 01.07.2016
-      if (startDate > newArray[period].Cur_DateEnd) { continue; }
-
-      // iSD - iteration start date
-      const iSD = startDate > newArray[period].Cur_DateStart ? startDate : newArray[period].Cur_DateStart;
-      // iED = iteration end date
-      const iED = endDate < newArray[period].Cur_DateEnd ? endDate : newArray[period].Cur_DateEnd;
-
-      const startYear = Number(dayjs(iSD).format('YYYY'));
-      const endYear = Number(dayjs(iED).format('YYYY'));
-
-      for (let year = startYear; year <= endYear; year += 1) {
-        const begin = year === startYear ? dayjs(iSD).format('YYYY-MM-DD'): `${year}-01-01`;
-        const end = year === endYear ? dayjs(iED).format('YYYY-MM-DD') : `${year}-12-31`;
-
-        urlArr.push(`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${newArray[period].Cur_ID}?startDate=${begin}T00:00:00&endDate=${end}T00:00:00`)
-      }
-    }
-
-   worker1.postMessage(urlArr);
 }
 
 function chart(categories, data) {

@@ -23,20 +23,7 @@
         <div class="navigation__choice"><h1 class="navigation__title">Изменение курсов валют за период</h1>
             <form class="navigation__form" method="GET" action="index.html">
                 <div class="navigation__choiceitem navigation__choiceitem_first">
-                <label class="navigation__label">Валюта</label><br>
-                <select id="valuta" class="navigation__selection navigation__selection1">
 
-                </select>
-                <template class="navigation__selectionVariants">
-                    <option class="navigation__currencyOption"></option>
-                </template>
-                </div>
-                <div class="navigation__choiceitem navigation__choiceitem_second">
-                    <label class="navigation__label">Начальная дата отображения:</label><br>
-                    <input id="startDateId" type="date" class="navigation__input navigation__input_first" min="1991-01-01">
-                </div>
-                <div class="navigation__choiceitem navigation__choiceitem_third">
-                    <label class="navigation__label">Параметр отображения:</label><br>
                     <select class="navigation__selection navigation__selection2">
                         <option class="navigation__periodOption" value="день">день</option>
                         <option class="navigation__periodOption" value="месяц">месяц</option>
@@ -48,7 +35,7 @@
                     <input id="endDateId" type="date" class="navigation__input navigation__input_second" min="1991-01-01">
                 </div>
             </form>
-            <button class="navigation__button" onclick='getChart()'>Показать</button>
+
         </div>
      </nav>
      <!--main part-->
