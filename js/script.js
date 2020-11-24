@@ -3,6 +3,7 @@ const currentYear = document.querySelector('.footer__curyear');
 currentYear.innerHTML = dayjs().year();
 
 function getCurrencyTable(content) {
+<<<<<<< HEAD
     let key;
     const temp2 = document.querySelector('.mainpart__template1');
     const item2 = temp2.content.querySelector('.mainpart__par1');
@@ -30,6 +31,9 @@ function getCurrencyTable(content) {
         const copyHTML6 = document.importNode(item6, true);
         copyHTML6.textContent = content[key].Date.slice(0, 10);
         document.querySelector('.mainpart__tableCell5').appendChild(copyHTML6);
+=======
+
+>>>>>>> 7ee61504c61b85ff217305003baca11013ed5f3a
     }
 }
 

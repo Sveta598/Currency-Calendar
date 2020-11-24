@@ -13,6 +13,7 @@ worker1.onmessage = function(e) {
 }
 
 function getOptions(currencyData) {
+<<<<<<< HEAD
 
     let key;
 
@@ -113,6 +114,80 @@ function getChart () {
     }
 
    worker1.postMessage(urlArr);
+=======
+
+    let key;
+
+    const currencyObj = {};
+
+    for (let i = 0; i < currencyData.length; i++) {
+        const abbr = currencyData[i].Cur_Abbreviation;
+
+        if (!currencyObj[abbr]) {
+            currencyObj[abbr] = {
+                Cur_Abbreviation: abbr,
+                payload: [],
+            }
+        }
+
+        currencyObj[abbr].payload.push({
+            Cur_ID: currencyData[i].Cur_ID,
+            Cur_DateStart: currencyData[i].Cur_DateStart,
+            Cur_DateEnd: currencyData[i].Cur_DateEnd,
+        });
+    }
+
+    if (localStorage.getItem('currencyObject') !== null) {
+        JSON.parse(localStorage.getItem('currencyObject'));
+    } else {
+        localStorage.setItem('currencyObject', JSON.stringify(currencyObj));
+    }
+
+    const currencyArr = Object.values(currencyObj);
+
+    let options = '';
+
+    const temp = document.querySelector('.navigation__selectionVariants');
+    const item = temp.content.querySelector('.navigation__currencyOption');
+
+    for (key in currencyArr) {
+
+        currencyArr.sort(function(a, b){
+            if(a.Cur_Abbreviation < b.Cur_Abbreviation) { return -1; }
+            if(a.Cur_Abbreviation > b.Cur_Abbreviation) { return 1; }
+            return 0;
+        })
+
+        options = currencyArr[key].Cur_Abbreviation;
+        const copyHTML = document.importNode(item, true);
+        copyHTML.textContent = options;
+        document.querySelector('.navigation__selection1').appendChild(copyHTML);
+    }
+
+    if (localStorage.getItem('currencyArray') !== null) {
+        JSON.parse(localStorage.getItem('currencyArray'));
+    } else {
+        localStorage.setItem('currencyArray', JSON.stringify(currencyArr));
+    }
+}
+
+
+
+function getChart () {
+    const cur = valuta.value;
+    const startDate = startDateId.value;
+    const endDate = endDateId.value;
+
+    let currencies = localStorage.getItem('currencyObject');
+    if (!currencies) {
+        throw 'currencyObj not setted';
+        return;
+    } else {
+        currencies = JSON.parse(currencies);
+    }
+
+
+>>>>>>> 7ee61504c61b85ff217305003baca11013ed5f3a
 }
 
 function chart(categories, data) {
@@ -156,4 +231,8 @@ if (localStorage.getItem('currenctYear') !== null) {
     JSON.parse(localStorage.getItem('currentYear'));
 } else {
     localStorage.setItem('currenctYear', JSON.stringify(currentYear.innerHTML));
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7ee61504c61b85ff217305003baca11013ed5f3a
