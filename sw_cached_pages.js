@@ -1,4 +1,4 @@
-const cacheName = 'v1';
+const cacheName = 'v7';
 
 const cacheAssets = [
     '/',
@@ -24,6 +24,7 @@ const cacheAssets = [
     '/js/upButton.js',
     'https://www.nbrb.by/api/exrates/rates?periodicity=0',
     'https://www.nbrb.by/api/exrates/currencies',
+    //`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${currencyID}?startDate=${urlStart}T00:00:00&endDate=${urlEnd}T00:00:00`,
 ]
 
 self.addEventListener ('install', e => {
@@ -51,7 +52,21 @@ self.addEventListener ('activate', e => {
     );
 });
 
-self.addEventListener ('fetch', e => {
+/*self.addEventListener ('fetch', e => {
     e.respondWith(
         fetch(e.request).catch(() => caches.match(e.request)));
+});*/
+
+self.addEventListener('fetch', function (event) {
+    event.respondWith(
+      caches.open('v7').then(function (cache) {
+        return cache.match(event.request).then(function (response) {
+          var fetchPromise = fetch(event.request).then(function (networkResponse) {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+          return response || fetchPromise;
+        });
+      }),
+    );
 });
