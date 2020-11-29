@@ -1,15 +1,23 @@
 const currencyUrl2 = 'https://www.nbrb.by/api/exrates/currencies';
 
-const worker = new Worker('js/worker3.js');
+const worker2 = new Worker('js/todayRateWorker.js');
+worker2.postMessage('do something');
+worker2.addEventListener('message', function(event) {
+    getContent(event.data);   
+});   
+
+const worker = new Worker('js/curObjWorker.js');
 worker.postMessage(currencyUrl2)
 worker.onmessage = function(e) {
     getOptions (e.data);
     worker.terminate();
 }
 
-const worker1 = new Worker('js/worker4.js');
+const worker1 = new Worker('js/chartDrawWorker.js');
 worker1.onmessage = function(e) {
+    saveToLocalStorage ();
     chart (e.data.date, e.data.rate);
+    drawMovingAverage (e.data.date, e.data.rate);
 }
 
 function getOptions(currencyData) {
@@ -42,7 +50,7 @@ function getOptions(currencyData) {
     }
 
     const currencyArr = Object.values(currencyObj);
-
+    
     let options = '';
 
     const temp = document.querySelector('.navigation__selectionVariants');
@@ -62,6 +70,8 @@ function getOptions(currencyData) {
         document.querySelector('.navigation__selection1').appendChild(copyHTML);
     }
 
+    document.querySelector('.navigation__selection1').selectedIndex = 101;
+
     if (localStorage.getItem('currencyArray') !== null) {
         JSON.parse(localStorage.getItem('currencyArray'));
     } else {
@@ -74,6 +84,8 @@ const currentDate = dayjs().format(dateFormat);
 const currentDateSubtract = dayjs().subtract(1, 'd').format(dateFormat);
 document.querySelector('.navigation__input_first').max = currentDateSubtract;
 document.querySelector('.navigation__input_second').max = currentDate;
+document.querySelector('.navigation__input_first').value = currentDateSubtract;
+document.querySelector('.navigation__input_second').value = currentDate;
 
 function getChart () {
     const cur = valuta.value;
@@ -99,9 +111,7 @@ function getChart () {
         
       if (startDate > newArray[period].Cur_DateEnd) { continue; }
 
-      // iSD - iteration start date
       const iSD = startDate > newArray[period].Cur_DateStart ? startDate : newArray[period].Cur_DateStart;
-      // iED = iteration end date
       const iED = endDate < newArray[period].Cur_DateEnd ? endDate : newArray[period].Cur_DateEnd;
 
       const startYear = Number(dayjs(iSD).format('YYYY'));
@@ -118,35 +128,10 @@ function getChart () {
    worker1.postMessage(urlArr);
 }
 
-function chart(categories, data) {
-    const curAbbr = valuta.value;
-    let curList = localStorage.getItem('currencyObject');
-    if (!curList) {
-        throw 'curList not setted';
-        return;
-    } else {
-        curList = JSON.parse(curList);
-    }
-
-    const currencyItem = curList[curAbbr];
-    const currencyName = currencyItem.Cur_Abbreviation;
-
+function drawMovingAverage (categories, data) {
     let startPoint = localStorage.getItem('startDate');
-    if (!startPoint) {
-        throw 'startDate not setted';
-        return;
-    } else {
-        startPoint = JSON.parse(startPoint);
-    }
-
     let endPoint = localStorage.getItem('endDate');
-    if (!endPoint) {
-        throw 'endDate not setted';
-        return;
-    } else {
-        endPoint = JSON.parse(endPoint);
-    }
-
+  
     if (document.querySelector('.navigation__selection2').selectedIndex === 1) {
         const dateArray1 = [];
         const quoteArray1 = [];
@@ -195,38 +180,8 @@ function chart(categories, data) {
         quoteArray1.push(shortNumber3);
         const chartDate3 = dayjs(endPoint).format('YYYY-MM');
         dateArray1.push(chartDate3);
-      
-        Highcharts.chart('container', {
-            chart: {
-                type: 'line'
-            },
-            title: {
-                text: `Курс ${currencyName} к BYN`
-            },
-            subtitle: {
-                text: `Изменение курса ${currencyName} за выбранный период`
-            },
-            xAxis: {
-                categories: dateArray1,
-            },
-            yAxis: {
-                title: {
-                text: `Курс ${currencyName}`
-                }
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
-                }
-            },
-            series: [{
-                name: `Динамика курса ${currencyName}`,
-                data: quoteArray1, 
-            }]
-        });
+
+        chart(dateArray1, quoteArray1);
     }
 
     else if (document.querySelector('.navigation__selection2').selectedIndex === 2) {
@@ -277,73 +232,86 @@ function chart(categories, data) {
         quoteArray2.push(shortNumber3);
         const chartDate3 = dayjs(endPoint).format('YYYY');
         dateArray2.push(chartDate3);
-        
-        Highcharts.chart('container', {
-            chart: {
-                type: 'line'
-            },
-            title: {
-                text: `Курс ${currencyName} к BYN`
-            },
-            subtitle: {
-                text: `Изменение курса ${currencyName} за выбранный период`
-            },
-            xAxis: {
-                categories: dateArray2,
-            },
-            yAxis: {
-                title: {
-                text: `Курс ${currencyName}`
-                }
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
-                }
-            },
-            series: [{
-                name: `Динамика курса ${currencyName}`,
-                data: quoteArray2, 
-            }]
-        });
+
+        chart(dateArray2, quoteArray2);
     }
+}
+
+function getContent(content) {
+    localStorage.setItem('content', JSON.stringify(content));
+} 
+
+function saveToLocalStorage () {
+    let keyCurrencies = JSON.parse(localStorage.getItem('content'));
+    const abbr = valuta.value;
+    const yearAgo = dayjs().subtract(1, 'y').add(1, 'd').format(dateFormat);
+    for (let i = 0; i < keyCurrencies.length; i++) {
+        const id = keyCurrencies[i].Cur_ID;
+        if (abbr === keyCurrencies[i].Cur_Abbreviation) {
+            if (localStorage.getItem(`${abbr} daily dates`) !== null && localStorage.getItem(`${abbr} daily quotes`) !== null) {
+                JSON.parse(localStorage.getItem(`${abbr} daily dates`));
+                JSON.parse(localStorage.getItem(`${abbr} daily quotes`));
+            } 
+            else {
+                    async function getResponse() {
+                        const response = await fetch(`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${id}?startDate=${yearAgo}T00:00:00&endDate=${currentDate}T00:00:00`);
+                        const content = await response.json();
+                        const categories = content.map(el => el.Date.slice(0, 10));
+                        localStorage.setItem(`${abbr} daily dates`, JSON.stringify(categories));
+                        const data = content.map(el => el.Cur_OfficialRate);
+                        localStorage.setItem(`${abbr} daily quotes`, JSON.stringify(data));
+                    }
+                    getResponse();
+            }
+        }
+    }
+}
+
+function chart(categories, data) {
+    const curAbbr = valuta.value;
+
+    let curList = localStorage.getItem('currencyObject');
+    if (!curList) {
+        throw 'curList not setted';
+        return;
+    } else {
+        curList = JSON.parse(curList);
+    }
+
+    const currencyItem = curList[curAbbr];
+    const currencyName = currencyItem.Cur_Abbreviation;
     
-    else {
-        Highcharts.chart('container', {
-            chart: {
-                type: 'line'
-            },
+    Highcharts.chart('container', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: `Курс ${currencyName} к BYN`
+        },
+        subtitle: {
+            text: `Изменение курса ${currencyName} за выбранный период`
+        },
+        xAxis: {
+            categories,
+        },
+        yAxis: {
             title: {
-                text: `Курс ${currencyName} к BYN`
-            },
-            subtitle: {
-                text: `Изменение курса ${currencyName} за выбранный период`
-            },
-            xAxis: {
-                categories,
-            },
-            yAxis: {
-                title: {
-                text: `Курс ${currencyName}`
-                }
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
-                }
-            },
-            series: [{
-                name: `Динамика курса ${currencyName}`,
-                data,
-            }]
-        });
-    }
+            text: `Курс ${currencyName}`
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        series: [{
+            name: `Динамика курса ${currencyName}`,
+            data,
+        }]
+    });
 }
 
 const currentYear = document.querySelector('.footer__curyear');

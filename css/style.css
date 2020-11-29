@@ -192,14 +192,21 @@
     .footer__share {
         flex-basis: 100%;
         text-align: center;
-        margin-left: 20%;
+        margin-left: 0;
+        padding-left: 0;
     }
     .footer__anchor {
-        margin-left: -5%;
+        margin-left: -2.5%;
     }
 }
 
 @media screen and (max-width: 750px) {
+    html {
+        width: 100%;
+    }
+    body {
+        width: 97%;
+    }
     .mainpart__tableCell5 {
       display: none;
     }  
