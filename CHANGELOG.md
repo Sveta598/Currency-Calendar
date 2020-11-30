@@ -16,7 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - name of script3.js file, which is now chartDrawing.js file.
 - name of worker3.js file, which is now curObjWorker.js file.
 - name of worker4.js file, which is now chartDrawWorker.js file.
-- name of today.html file, which is now todayRates.html file.
+- name of today.html file, which is now todayrates.html file.
+- name of projectInfo.html file, which is now projectinfo.html file.
 - name of script.js file, which is now todayRates.js file.
 - name of worker.js file, which is now todayRateWorker.js file.
 - name of main.js file, which is now cacheswreg.js file.

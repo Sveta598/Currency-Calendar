@@ -1,10 +1,10 @@
-const cacheName = 'v1';
+const cacheName = 'v10';
 
 const cacheAssets = [
     '/',
     'index.html',
-    'todayRates.html',
-    'projectInfo.html',
+    'todayrates.html',
+    'projectinfo.html',
     '/css/style.css',
     '/css/font/_flaticon.scss',
     '/css/font/flaticon.css',
@@ -22,8 +22,8 @@ const cacheAssets = [
     '/js/curObjWorker.js',
     '/js/chartDrawWorker.js',
     '/js/upButton.js',
-    'https://www.nbrb.by/api/exrates/rates?periodicity=0',
     'https://www.nbrb.by/api/exrates/currencies',
+    'https://www.nbrb.by/api/exrates/rates?periodicity=0',
 ]
 
 self.addEventListener ('install', e => {
@@ -51,16 +51,13 @@ self.addEventListener ('activate', e => {
     );
 });
 
-self.addEventListener('fetch', function (event) {
+self.addEventListener ('fetch', event => {
     event.respondWith(
-      caches.open('v1').then(function (cache) {
-        return cache.match(event.request).then(function (response) {
-          var fetchPromise = fetch(event.request).then(function (networkResponse) {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
-          return response || fetchPromise;
-        });
-      }),
+        caches.open('v10').then(cache => {
+            return fetch (event.request).then(response => {
+                cache.put(event.request, response.clone());
+                return response;
+            });
+        }),
     );
 });
