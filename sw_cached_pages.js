@@ -1,4 +1,4 @@
-const cacheName = 'v10';
+const cacheName = 'v11';
 
 const cacheAssets = [
     '/',
@@ -51,13 +51,17 @@ self.addEventListener ('activate', e => {
     );
 });
 
-self.addEventListener ('fetch', event => {
+self.addEventListener('fetch', function (event) {
     event.respondWith(
-        caches.open('v10').then(cache => {
-            return fetch (event.request).then(response => {
-                cache.put(event.request, response.clone());
-                return response;
-            });
-        }),
+      caches.open('v11').then(function (cache) {
+        return cache.match(event.request).then(function (response) {
+          var fetchPromise = fetch(event.request).then(function (networkResponse) {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+          return response || fetchPromise;
+        });
+      }),
     );
 });
+
