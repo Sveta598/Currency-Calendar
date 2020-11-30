@@ -16,7 +16,7 @@
     <header class="header">
         <h1 class="header__title">Валютный календарь</h1>
         <div class="header__info"><a href="projectInfo.html" class="header__anchor" title="Описание текущего проекта">Информация о проекте</a></div>
-        <div class="header__info header__info_second"><a href="today.html" class="header__anchor" title="Информация об установленных валютных курсах на сегодня">Курсы валют на сегодня</a></div>
+        <div class="header__info header__info_second"><a href="todayRates.html" class="header__anchor" title="Информация об установленных валютных курсах на сегодня">Курсы валют на сегодня</a></div>
      </header>
      <!--navigation-->
      <nav class="navigation">
@@ -24,8 +24,7 @@
             <form class="navigation__form" method="GET" action="index.html">
                 <div class="navigation__choiceitem navigation__choiceitem_first">
                 <label class="navigation__label">Валюта</label><br>
-                <select id="valuta" class="navigation__selection navigation__selection1" onchange="getChart()">
-
+                <select id="valuta" class="navigation__selection navigation__selection1">
                 </select>
                 <template class="navigation__selectionVariants">
                     <option class="navigation__currencyOption"></option>
@@ -33,11 +32,11 @@
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_second">
                     <label class="navigation__label">Начальная дата отображения:</label><br>
-                    <input id="startDateId" type="date" class="navigation__input navigation__input_first" min="1991-01-01" onchange="getChart()">
+                    <input id="startDateId" type="date" class="navigation__input navigation__input_first" min="1991-01-01">
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_third">
                     <label class="navigation__label">Параметр отображения:</label><br>
-                    <select class="navigation__selection navigation__selection2" onchange="getChart()">
+                    <select class="navigation__selection navigation__selection2">
                         <option class="navigation__periodOption" value="день">день</option>
                         <option class="navigation__periodOption" value="месяц">месяц</option>
                         <option class="navigation__periodOption" value="год">год</option>
@@ -45,10 +44,10 @@
                 </div>
                 <div class="navigation__choiceitem navigation__choiceitem_fourth">
                     <label class="navigation__label">Конечная дата отображения:</label><br>
-                    <input id="endDateId" type="date" class="navigation__input navigation__input_second" min="1991-01-01" onchange="getChart()">
+                    <input id="endDateId" type="date" class="navigation__input navigation__input_second" min="1991-01-01">
                 </div>
             </form>
-            <!--<button class="navigation__button" onclick='getChart()'>Показать</button>-->
+            <button class="navigation__button" onclick='getChart()'>Показать</button>
         </div>
      </nav>
      <!--main part-->
@@ -85,9 +84,8 @@
         </div>
     </footer>
     <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
-
-    <script src="js/script3.js"></script>
+    <script src="js/chartDrawing.js"></script>
     <script src="js/upButton.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/cacheswreg.js"></script>
 </body>
 </html>
