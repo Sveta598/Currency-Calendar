@@ -1,4 +1,4 @@
-const cacheName = 'v11';
+const cacheName = 'v1';
 
 const cacheAssets = [
     '/',
@@ -53,7 +53,7 @@ self.addEventListener ('activate', e => {
 
 self.addEventListener('fetch', function (event) {
     event.respondWith(
-      caches.open('v11').then(function (cache) {
+      caches.open('v1').then(function (cache) {
         return cache.match(event.request).then(function (response) {
           var fetchPromise = fetch(event.request).then(function (networkResponse) {
             cache.put(event.request, networkResponse.clone());
