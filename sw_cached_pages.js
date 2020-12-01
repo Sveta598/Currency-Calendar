@@ -1,4 +1,4 @@
-const cacheName = 'v1';
+const cacheName = 'v20';
 
 const cacheAssets = [
     '/',
@@ -53,7 +53,7 @@ self.addEventListener ('activate', e => {
 
 self.addEventListener('fetch', function (event) {
     event.respondWith(
-      caches.open('v1').then(function (cache) {
+      caches.open('v20').then(function (cache) {
         return cache.match(event.request).then(function (response) {
           var fetchPromise = fetch(event.request).then(function (networkResponse) {
             cache.put(event.request, networkResponse.clone());
@@ -64,4 +64,3 @@ self.addEventListener('fetch', function (event) {
       }),
     );
 });
-
