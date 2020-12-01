@@ -244,27 +244,32 @@ function getContent(content) {
 function saveToLocalStorage () {
     let keyCurrencies = JSON.parse(localStorage.getItem('content'));
     const abbr = valuta.value;
-    const yearAgo = dayjs().subtract(1, 'y').add(1, 'd').format(dateFormat);
     for (let i = 0; i < keyCurrencies.length; i++) {
         const id = keyCurrencies[i].Cur_ID;
+        localStorage.setItem('id', JSON.stringify(id));
         if (abbr === keyCurrencies[i].Cur_Abbreviation) {
-            if (localStorage.getItem(`${abbr} daily dates`) !== null && localStorage.getItem(`${abbr} daily quotes`) !== null) {
+            if (localStorage.getItem(`${abbr} daily dates`) !== null 
+            && localStorage.getItem(`${abbr} daily quotes`) !== null) {
                 JSON.parse(localStorage.getItem(`${abbr} daily dates`));
                 JSON.parse(localStorage.getItem(`${abbr} daily quotes`));
             } 
             else {
-                async function getResponse() {
-                    const response = await fetch(`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${id}?startDate=${yearAgo}T00:00:00&endDate=${currentDate}T00:00:00`);
-                    const content = await response.json();
-                    const categories = content.map(el => el.Date.slice(0, 10));
-                    localStorage.setItem(`${abbr} daily dates`, JSON.stringify(categories));
-                    const data = content.map(el => el.Cur_OfficialRate);
-                    localStorage.setItem(`${abbr} daily quotes`, JSON.stringify(data));
-                }
                 getResponse();
             }
         }
     }
+}
+
+async function getResponse() {
+    const abbr = valuta.value;
+    const yearAgo = dayjs().subtract(1, 'y').add(1, 'd').format(dateFormat);
+    let id = JSON.parse(localStorage.getItem('id'));
+    const response = await fetch(`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${id}?startDate=${yearAgo}T00:00:00&endDate=${currentDate}T00:00:00`);
+    const content = await response.json();
+    const categories = content.map(el => el.Date.slice(0, 10));
+    localStorage.setItem(`${abbr} daily dates`, JSON.stringify(categories));
+    const data = content.map(el => el.Cur_OfficialRate);
+    localStorage.setItem(`${abbr} daily quotes`, JSON.stringify(data));
 }
 
 function chart(categories, data) {
