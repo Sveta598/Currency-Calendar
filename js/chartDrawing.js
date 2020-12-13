@@ -1,17 +1,15 @@
-const currencyUrl2 = 'https://www.nbrb.by/api/exrates/currencies';
+const worker = new Worker('js/curObjWorker.js');
+worker.postMessage('do something');
+worker.addEventListener('message', function(event) {
+    getOptions (event.data);
+    worker.terminate();
+}); 
 
 const worker2 = new Worker('js/todayRateWorker.js');
 worker2.postMessage('do something');
 worker2.addEventListener('message', function(event) {
     getContent(event.data);   
 });   
-
-const worker = new Worker('js/curObjWorker.js');
-worker.postMessage(currencyUrl2)
-worker.onmessage = function(e) {
-    getOptions (e.data);
-    worker.terminate();
-}
 
 const worker1 = new Worker('js/chartDrawWorker.js');
 worker1.onmessage = function(e) {
@@ -43,11 +41,7 @@ function getOptions(currencyData) {
         });
     }
 
-    if (localStorage.getItem('currencyObject') !== null) {
-        JSON.parse(localStorage.getItem('currencyObject'));
-    } else {
-        localStorage.setItem('currencyObject', JSON.stringify(currencyObj));
-    }
+    localStorage.setItem('currencyObject', JSON.stringify(currencyObj));
 
     const currencyArr = Object.values(currencyObj);
     
@@ -72,11 +66,7 @@ function getOptions(currencyData) {
 
     document.querySelector('.navigation__selection1').selectedIndex = 101;
 
-    if (localStorage.getItem('currencyArray') !== null) {
-        JSON.parse(localStorage.getItem('currencyArray'));
-    } else {
-        localStorage.setItem('currencyArray', JSON.stringify(currencyArr));
-    }
+    localStorage.setItem('currencyArray', JSON.stringify(currencyArr));
 }
 
 const dateFormat = ('YYYY-MM-DD');
@@ -125,7 +115,18 @@ function getChart () {
       }
     }
 
-   worker1.postMessage(urlArr);
+    if (!navigator.onLine) {
+        if (localStorage.getItem(`${cur} daily dates`) !== null 
+        && localStorage.getItem(`${cur} daily quotes`) !== null) {
+            alert('Нет Интернета. Но вы можете посмотеть график за последний год.'); 
+            startDateId.value = yearAgo;
+            endDateId.value = dayjs(currentDate).subtract(1, 'd').format(dateFormat);
+        } 
+        else {
+            alert('Нет Интернета');  
+        }
+    }
+    worker1.postMessage(urlArr);
 }
 
 function drawMovingAverage (categories, data) {
@@ -248,21 +249,13 @@ function saveToLocalStorage () {
         const id = keyCurrencies[i].Cur_ID;
         localStorage.setItem('id', JSON.stringify(id));
         if (abbr === keyCurrencies[i].Cur_Abbreviation) {
-            if (localStorage.getItem(`${abbr} daily dates`) !== null 
-            && localStorage.getItem(`${abbr} daily quotes`) !== null) {
-                JSON.parse(localStorage.getItem(`${abbr} daily dates`));
-                JSON.parse(localStorage.getItem(`${abbr} daily quotes`));
-            } 
-            else {
-                getResponse();
-            }
+            getResponse();
         }
     }
 }
-
+const yearAgo = dayjs().subtract(1, 'y').add(1, 'd').format(dateFormat);
 async function getResponse() {
     const abbr = valuta.value;
-    const yearAgo = dayjs().subtract(1, 'y').add(1, 'd').format(dateFormat);
     let id = JSON.parse(localStorage.getItem('id'));
     const response = await fetch(`https://www.nbrb.by/API/ExRates/Rates/Dynamics/${id}?startDate=${yearAgo}T00:00:00&endDate=${currentDate}T00:00:00`);
     const content = await response.json();
@@ -285,6 +278,11 @@ function chart(categories, data) {
 
     const currencyItem = curList[curAbbr];
     const currencyName = currencyItem.Cur_Abbreviation;
+
+    if (!navigator.onLine) {
+        categories = JSON.parse(localStorage.getItem(`${curAbbr} daily dates`));
+        data = JSON.parse(localStorage.getItem(`${curAbbr} daily quotes`));
+    }
     
     Highcharts.chart('container', {
         chart: {

@@ -23,4 +23,4 @@ onmessage = function(e) {
             })
             .then(mapper)
             .then(self.postMessage);
-    }
+}

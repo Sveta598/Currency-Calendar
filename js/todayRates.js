@@ -33,11 +33,8 @@ function getCurrencyTable(content) {
     }
 }
 
-let worker
-if (window.Worker) {
-    const worker = new Worker('js/todayRateWorker.js');
-    worker.postMessage('do something');
-    worker.addEventListener('message', function(event) {
-        getCurrencyTable(event.data);       
-    });   
-}
+const worker = new Worker('js/todayRateWorker.js');
+worker.postMessage('do something');
+worker.addEventListener('message', function(event) {
+    getCurrencyTable(event.data);       
+});   
