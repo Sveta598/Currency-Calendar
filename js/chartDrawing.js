@@ -115,8 +115,8 @@ function getChart () {
       }
     }
 
-    if (!navigator.onLine) {
-        if (localStorage.getItem(`${cur} daily dates`) !== null 
+   // if (!navigator.onLine) {
+        /*if (localStorage.getItem(`${cur} daily dates`) !== null 
         && localStorage.getItem(`${cur} daily quotes`) !== null) {
             alert('Нет Интернета. Но вы можете посмотеть график за последний год.'); 
             startDateId.value = yearAgo;
@@ -124,8 +124,8 @@ function getChart () {
         } 
         else {
             alert('Нет Интернета');  
-        }
-    }
+        }*/
+    //}
     worker1.postMessage(urlArr);
 }
 
@@ -280,8 +280,19 @@ function chart(categories, data) {
     const currencyName = currencyItem.Cur_Abbreviation;
 
     if (!navigator.onLine) {
-        categories = JSON.parse(localStorage.getItem(`${curAbbr} daily dates`));
-        data = JSON.parse(localStorage.getItem(`${curAbbr} daily quotes`));
+        if (localStorage.getItem(`${cur} daily dates`) !== null 
+        && localStorage.getItem(`${cur} daily quotes`) !== null) {
+            alert('Нет Интернета. Но вы можете посмотеть график за последний год.'); 
+            startDateId.value = yearAgo;
+            endDateId.value = dayjs(currentDate).subtract(1, 'd').format(dateFormat);
+            categories = JSON.parse(localStorage.getItem(`${curAbbr} daily dates`));
+            data = JSON.parse(localStorage.getItem(`${curAbbr} daily quotes`));*/
+        } 
+        else {
+            alert('Нет Интернета');  
+        }
+        /*categories = JSON.parse(localStorage.getItem(`${curAbbr} daily dates`));
+        data = JSON.parse(localStorage.getItem(`${curAbbr} daily quotes`));*/
     }
     
     Highcharts.chart('container', {
