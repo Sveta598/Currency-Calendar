@@ -119,8 +119,8 @@ function getChart () {
         if (localStorage.getItem(`${cur} daily dates`) !== null 
         && localStorage.getItem(`${cur} daily quotes`) !== null) {
             alert('Нет Интернета. Но вы можете посмотеть график за последний год, обновив страницу'); 
-            startDateId.value = yearAgo;
-            endDateId.value = dayjs(currentDate).subtract(1, 'd').format(dateFormat);
+            /*startDateId.value = yearAgo;
+            endDateId.value = dayjs(currentDate).subtract(1, 'd').format(dateFormat);*/
         } 
         else {
             alert('Нет Интернета');  
