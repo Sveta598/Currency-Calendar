@@ -286,7 +286,7 @@ function chart(categories, data) {
             startDateId.value = yearAgo;
             endDateId.value = dayjs(currentDate).subtract(1, 'd').format(dateFormat);
             categories = JSON.parse(localStorage.getItem(`${curAbbr} daily dates`));
-            data = JSON.parse(localStorage.getItem(`${curAbbr} daily quotes`));*/
+            data = JSON.parse(localStorage.getItem(`${curAbbr} daily quotes`));
         } 
         else {
             alert('Нет Интернета');  
