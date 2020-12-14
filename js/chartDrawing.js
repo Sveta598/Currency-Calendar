@@ -280,8 +280,8 @@ function chart(categories, data) {
     const currencyName = currencyItem.Cur_Abbreviation;
 
     if (!navigator.onLine) {
-        if (localStorage.getItem(`${cur} daily dates`) !== null 
-        && localStorage.getItem(`${cur} daily quotes`) !== null) {
+        if (localStorage.getItem(`${curAbbr} daily dates`) !== null 
+        && localStorage.getItem(`${curAbbr} daily quotes`) !== null) {
             alert('Нет Интернета. Но вы можете посмотеть график за последний год.'); 
             startDateId.value = yearAgo;
             endDateId.value = dayjs(currentDate).subtract(1, 'd').format(dateFormat);
