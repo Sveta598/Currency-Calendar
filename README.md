@@ -10,4 +10,8 @@
     веб-воркеры;
     библиотеки Highcharts и Day.js;
     templates;
-    сохранение данных в Local Storage и в кэш.
+    сохранение данных в Local Storage и в кэш
+    
+  Ссылка на проект: festive-nightingale-1ff215.netlify.app/
+  
+    
