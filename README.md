@@ -12,7 +12,7 @@
     templates;
     сохранение данных в Local Storage и в кэш
     
-  Ссылка на проект: festive-nightingale-1ff215.netlify.app/
+Ссылка на проект: festive-nightingale-1ff215.netlify.app/
   
   
     
